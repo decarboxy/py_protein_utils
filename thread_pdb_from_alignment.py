@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python2.5
 from Bio import AlignIO
 import Bio.PDB
 from optparse import OptionParser
