@@ -11,10 +11,10 @@ from protein import alignment
 
 usage = "%prog [options] alignment_file.aln template.pdb output.pdb"
 parser=OptionParser(usage)
-parser.add_option("--template",dest="template",help="name of the template sequence", Default="template")
-parser.add_option("--alignment", dest ="alignment",help="name of the alignment sequence",Default="alignment")
-parser.add_option("--chain",dest="chain",help="chain to thread pdb around")
-parser.add_option("--align_format",dest="align_format",help="alignment file format, choose from clustal, emboss, fasta, fasta-m10,ig,nexus,phylip,stockholm.  See http://biopython.org/wiki/AlignIO for details"Default="clustal")
+parser.add_option("--template",dest="template",help="name of the template sequence", default="template")
+parser.add_option("--alignment", dest ="alignment",help="name of the alignment sequence",default="alignment")
+parser.add_option("--chain",dest="chain",help="chain to thread pdb around",default="A")
+parser.add_option("--align_format",dest="align_format",help="alignment file format, choose from clustal, emboss, fasta, fasta-m10,ig,nexus,phylip,stockholm.  See http://biopython.org/wiki/AlignIO for details",default="clustal")
 (options,args)= parser.parse_args()
 
 #read in our input files
@@ -59,7 +59,7 @@ for align_resn, temp_resn in zip(alignment[alignment_id],alignment[template_id])
         output_structure_builder.init_atom("C",zero_triplet,0.0,1.0," "," C  ",atom_num,"C")
         atom_num += 1
         output_structure_builder.init_atom("O", zero_triplet,0.0,1.0," "," O  ",atom_num,"O")
-        atom_num + = 1
+        atom_num += 1
         sequence_num += 1
     elif align_resn == '-' and temp_resn != '-': #gap in the alignment, not in the template, skip the residue
         continue
