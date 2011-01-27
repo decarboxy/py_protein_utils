@@ -42,19 +42,25 @@ output_structure_builder = Bio.PDB.StructureBuilder.StructureBuilder()
 output_structure_builder.init_structure(args[2]) 
 output_structure_builder.init_model(1) #there is only one model
 output_structure_builder.init_chain(options.chain) #there is only one chain, same ID as the template
+output_structure_builder.init_seg("")
 
-#thats it for the initialization stuff, now we go through add residues, and atoms.  
-template_residues = template_struct.get_residues()
+#thats it for the initialization stuff, now we go through add residues, and atoms.
+template_residues = None
+for chain in template_struct.get_chains():
+    if chain.get_id() == options.chain:
+        template_residues= template_struct.get_residues()
+        break
+#template_residues = template_struct.get_chains()
 sequence_num = 1 #the pdb sequence number
 atom_num = 1 #the atom id
 for align_resn, temp_resn in zip(alignment_data[alignment_id],alignment_data[template_id]):
-    print align_resn, temp_resn
+    #print align_resn, temp_resn
     if align_resn == '-' and temp_resn == '-':  #this shouldn't happen, but it is safe to ignore
         continue
     elif align_resn != '-' and temp_resn == '-': #gap in the template, not in the alignment, build a loop
         align_name3 = Bio.PDB.Polypeptide.one_to_three(align_resn)
-        output_structure_builder.init_residue(align_name3," ",sequence_num,"")
-        zero_triplet = array('f',[0.0,0.0,0.0])
+        output_structure_builder.init_residue(align_name3," ",sequence_num," ")
+        zero_triplet = array.array('f',[0.0,0.0,0.0])
         output_structure_builder.init_atom("N",zero_triplet,0.0,1.0," "," N  ", atom_num, "N")
         atom_num += 1
         output_structure_builder.init_atom("CA",zero_triplet,0.0,1.0," "," CA ",atom_num,"C")
@@ -74,22 +80,32 @@ for align_resn, temp_resn in zip(alignment_data[alignment_id],alignment_data[tem
         if(current_res.get_resname() != temp_name3):  #if the current residue from the pdb isnt the same type as the current from the template, something's broken
             print current_res.get_resname(),temp_name3
             sys.exit("Residue mismatch between alignment and PDB, check that PDB sequence and alignment sequence are identical")
-        output_structure_builder.init_residue(align_name3," ",sequence_num,"")
+        output_structure_builder.init_residue(align_name3," ",sequence_num," ")
         if(align_name3 == temp_name3): #if we have an exact alignment, copy all the atoms over, including the sidechain
             for atom in current_res:
                 coords = atom.get_coord()
                 name = atom.get_name()
+                element=""
+                if name[0].isdigit(): #if the first char of the atomname is a digit, its an H, otherwise its whatever the first char is
+                    element = "H"
+                else:
+                    element = name[0]
                 fullname = atom.get_fullname()
-                output_structure_builder.init_atom(name,coords,0.0,1.0," ",fullname,atom_num,None)
+                output_structure_builder.init_atom(name,coords,0.0,1.0," ",fullname,atom_num,element)
                 atom_num += 1
         else: #we don't have an exact alignment, just copy the backbone coordinates
             #by definition, the first 4 atoms that come out of a residue are N, CA, C, O.  How convenient...
-            for atom_index in range(4):
-                atom = current_res[atom_index]
+            for atom_name in ["N","CA","C","O"]:
+                atom = current_res[atom_name]
                 coords = atom.get_coord()
                 name = atom.get_name()
+                element=""
+                if name[0].isdigit(): #if the first char of the atomname is a digit, its an H, otherwise its whatever the first char is
+                    element = "H"
+                else:
+                    element = name[0]
                 fullname = atom.get_fullname()
-                output_structure_builder.init_atom(name,coords,0.0,1.0," ",fullname,atom_num,None)
+                output_structure_builder.init_atom(name,coords,0.0,1.0," ",fullname,atom_num,element)
                 atom_num += 1
         sequence_num += 1
 
