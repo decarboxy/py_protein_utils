@@ -1,5 +1,9 @@
 from Bio import AlignIO
 
+def get_id_from_tag(alignment,tag):
+    for index in len(alignment):
+        if(record[index].id == tag):
+            return index
 
 def find_gaps(alignment,tag):
     gaplist = []

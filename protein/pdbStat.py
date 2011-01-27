@@ -1,5 +1,4 @@
 import sys
-sys.path.append("/sb/meiler/scripts/python_library")
 import PSSM
 from Bio.PDB import * 
 import math
