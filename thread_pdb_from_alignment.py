@@ -23,8 +23,8 @@ alignment_data = AlignIO.read(alignment_file,options.align_format)
 alignment_file.close()
 template_struct = pdbStat.load_pdb(args[1])
 
-if len(alignment_data)  != 2:
-    sys.exit("alignment file must have exactly 2 sequences!") 
+#if len(alignment_data)  != 2:
+#    sys.exit("alignment file must have exactly 2 sequences!") 
 
 #find all the gaps, get numeric IDs from the string tags in the alignment file
 template_gaps = alignment.find_gaps(alignment_data,options.template)
