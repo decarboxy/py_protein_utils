@@ -48,7 +48,7 @@ output_structure_builder.init_seg("")
 template_residues = None
 for chain in template_struct.get_chains():
     if chain.get_id() == options.chain:
-        template_residues= template_struct.get_residues()
+        template_residues= chain.get_residues()
         break
 #template_residues = template_struct.get_chains()
 sequence_num = 1 #the pdb sequence number
