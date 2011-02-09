@@ -8,6 +8,10 @@ from protein import pdbStat
 from protein import alignment
 
 
+def list_to_generator(list):
+    for x in list:
+        yield x
+
 
 usage = "%prog [options] alignment_file.aln template.pdb output.pdb"
 parser=OptionParser(usage)
@@ -48,7 +52,7 @@ output_structure_builder.init_seg("")
 template_residues = None
 for chain in template_struct.get_chains():
     if chain.get_id() == options.chain:
-        template_residues= chain.get_residues()
+        template_residues= list_to_generator(chain.get_list())
         break
 #template_residues = template_struct.get_chains()
 sequence_num = 1 #the pdb sequence number
@@ -61,13 +65,13 @@ for align_resn, temp_resn in zip(alignment_data[alignment_id],alignment_data[tem
         align_name3 = Bio.PDB.Polypeptide.one_to_three(align_resn)
         output_structure_builder.init_residue(align_name3," ",sequence_num," ")
         zero_triplet = array.array('f',[0.0,0.0,0.0])
-        output_structure_builder.init_atom("N",zero_triplet,0.0,1.0," "," N  ", atom_num, "N")
+        output_structure_builder.init_atom("N",zero_triplet,0.0,-1.0," "," N  ", atom_num, "N")
         atom_num += 1
-        output_structure_builder.init_atom("CA",zero_triplet,0.0,1.0," "," CA ",atom_num,"C")
+        output_structure_builder.init_atom("CA",zero_triplet,0.0,-1.0," "," CA ",atom_num,"C")
         atom_num += 1
-        output_structure_builder.init_atom("C",zero_triplet,0.0,1.0," "," C  ",atom_num,"C")
+        output_structure_builder.init_atom("C",zero_triplet,0.0,-1.0," "," C  ",atom_num,"C")
         atom_num += 1
-        output_structure_builder.init_atom("O", zero_triplet,0.0,1.0," "," O  ",atom_num,"O")
+        output_structure_builder.init_atom("O", zero_triplet,0.0,-1.0," "," O  ",atom_num,"O")
         atom_num += 1
         sequence_num += 1
     elif align_resn == '-' and temp_resn != '-': #gap in the alignment, not in the template, skip the residue
