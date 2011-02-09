@@ -52,5 +52,16 @@ class RosettaLoopManager:
         for loop in looplist:
             loop_file.write(loop.to_string()+"\n")
         loop_file.close()
+        
+    def is_res_in_loop(self,resnum):
+        for loop in self.looplist:
+            if loop.start <= resnum and loop.end >= resnum:
+                return True
+        return False
+        
+    def add_loop(self,start,end,cutpoint,skip,extend):
+        loop = RosettaLoop()
+        loop.set_loop(start,end,cutpoint,skip,extend)
+        self.looplist.append(loop)
     
     
