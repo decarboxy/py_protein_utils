@@ -49,7 +49,7 @@ class RosettaLoopManager:
     
     def write(self,filename):
         loop_file = open(filename,"w")
-        for loop in looplist:
+        for loop in self.looplist:
             loop_file.write(loop.to_string()+"\n")
         loop_file.close()
         
