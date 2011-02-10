@@ -48,6 +48,7 @@ class SilentScoreTable:
 
     def add_file(self,path,ignore_ref=True):
         infile = open(path,'r')
+        header=[]
         for line in infile:
             if len(line)== 0:
                 continue
@@ -67,8 +68,17 @@ class SilentScoreTable:
                 except ValueError:
                     print "theres some problem with this score line, possible corruption, skipping line"
                     continue
-                #elif line[0] == "SCORE:" #this is normal silent file
-            
+                #elif 
+            elif line[0] == "SCORE:": #this is a normal silent file
+                if line[1] == "score" and len(header) == 0: #this is the header
+                    header = line[1:len(line)] #stick the scoreterms in the header
+                else: #this is a score line
+                    tag = line[-1] #the last item is the tag
+                    record = PoseScoreRecord(tag)
+                    for term,score in zip(header,line[1:len(line)-1]):
+                        
+                        record.add_score(term,float(score))
+                    self.records[tag] = record
         infile.close()
         
     def tag_exists(self,tag):
