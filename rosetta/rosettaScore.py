@@ -94,10 +94,10 @@ class SilentScoreTable:
     def score_generator(self,scoreterm):
         for tag in self.records.keys():
             try:
-                yield self.records[tag].get_score(scoreterm)
+                yield (tag,self.records[tag].get_score(scoreterm))
             except KeyError:
                 print "no",scoreterm,"in",tag,"returning 0"
-                yield 0
+                yield (tag,0)
         
                 
         
