@@ -257,12 +257,12 @@ def calculate_rms(native,decoy,ca_mode,residues,rms_residues,chain):
                 rms_residue_set.add(int(rms_residue))
         rms_residue_file.close()
         
-    for(native_chain, decoy_chain) in zip (native,decoy):
+    for(native_chain, decoy_chain) in zip (native[0].get_list(),decoy[0].get_list()):
         if chain is not "":
            if native_chain.get_id() != chain:
                print "ignoring chain " + native_chain.get_id()
                continue
-        for(native_residue, decoy_residue) in zip(native_chain,decoy_chain):
+        for(native_residue, decoy_residue) in zip(native_chain.get_list(),decoy_chain.get_list()):
            # if rms_residues is not "":
            #     if native_residue.get_id()[1] not in rms_residue_set:
            #         continue
@@ -271,19 +271,20 @@ def calculate_rms(native,decoy,ca_mode,residues,rms_residues,chain):
                     native_atoms.append(native_residue['CA'])
                     decoy_atoms.append(decoy_residue['CA'])
                 else:
-                    for (native_atom,decoy_atom) in zip(native_residue, decoy_residue):
-                        native_atoms.append(native_atom)
+                    for (native_atom,decoy_atom) in zip(native_residue.get_list(), decoy_residue.get_list()):
+                       # print native_atom
+			native_atoms.append(native_atom)
                         decoy_atoms.append(decoy_atom)
             elif len(residue_set) is 0:
                 if ca_mode:
                     native_atoms.append(native_residue['CA'])
                     decoy_atoms.append(decoy_residue['CA'])
                 else:
-                    for (native_atom,decoy_atom) in zip(native_residue, decoy_residue):
-                        native_atoms.append(native_atom)
+                    for (native_atom,decoy_atom) in zip(native_residue.get_list(), decoy_residue.get_list()):
+                        #print native_atom
+			native_atoms.append(native_atom)
                         decoy_atoms.append(decoy_atom)
-    superpose = Bio.PDB.Superimposer()
-
+    superpose = Superimposer()
     superpose.set_atoms(native_atoms,decoy_atoms)
     superpose.apply(decoy.get_atoms())
     if rms_residues is not "":
