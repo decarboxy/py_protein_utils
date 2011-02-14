@@ -1,3 +1,5 @@
+import operator 
+
 def get_table(path):
     raw_table = []
     infile = open(path,'r')
@@ -98,7 +100,14 @@ class SilentScoreTable:
             except KeyError:
                 print "no",scoreterm,"in",tag,"returning 0"
                 yield (tag,0)
-        
+    
+    def sorted_score_generator(self,scoreterm):
+        scores = []
+        for score_tuple in self.score_generator(scoreterm):
+            scores.append(score_tuple)
+        scores = sorted(scores,key= lambda x: x[1])
+        for score in scores:
+            yield score
                 
         
 class ScoreTable:
