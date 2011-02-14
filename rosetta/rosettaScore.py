@@ -48,6 +48,9 @@ class SilentScoreTable:
 
         self.records = {}
 
+    def __len__(self):
+        return len(self.records)
+        
     def add_file(self,path,ignore_ref=True):
         infile = open(path,'r')
         header=[]
