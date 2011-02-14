@@ -3,14 +3,14 @@
 from optparse import OptionParser
 from rosetta import rosettaScore
 
-usage - "%prog [options] --term=scoreterm --percent=10 silent.out"
+usage = "%prog [options] --term=scoreterm --percent=10 silent.out"
 parser=OptionParser(usage)
-parser.add_option("--term",dest=term,help="scoreterm to use")
-parser.add_option("--percent",dest=term,help="percent of structures to output",default=10)
+parser.add_option("--term",dest="term",help="scoreterm to use")
+parser.add_option("--percent",dest="percent",help="percent of structures to output",default=10)
 (options,args) = parser.parse_args()
 
 scores = rosettaScore.SilentScoreTable()
-scores.add_file(silent.out)
+scores.add_file(args[0])
 
 structure_count = len(scores)
 percent = float(options.percent)/100.0
