@@ -82,8 +82,10 @@ class SilentScoreTable:
                     tag = line[-1] #the last item is the tag
                     record = PoseScoreRecord(tag)
                     for term,score in zip(header,line[1:len(line)-1]):
-                        
-                        record.add_score(term,float(score))
+			try:
+				record.add_score(term,float(score))
+			except ValueError:
+				record.add_score(term,score)
                     self.records[tag] = record
         infile.close()
         

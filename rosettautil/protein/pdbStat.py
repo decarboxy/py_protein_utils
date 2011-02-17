@@ -119,7 +119,7 @@ def pssm_recovery_map(struct,pssm_map):
 
 def pssm_recovery_map_range(struct,pssm_map,min,max):
 	"""calculate the pssm recovery within a range of b factors given a
-	structure and a pssm map"
+	structure and a pssm map"""
 	struct_residues = struct.get_residues()
 	recovery_map = {}
 	for residue in struct_residues:
