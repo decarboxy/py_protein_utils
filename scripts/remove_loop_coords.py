@@ -4,8 +4,8 @@ import array
 import Bio.PDB
 from optparse import OptionParser
 
-from protein import pdbStat
-from rosetta import loops
+from rosettautil.protein import pdbStat
+from rosettautil.rosetta import loops
 
 usage = "%prog [options] loopfile.txt input.pdb output.pdb"
 parser=OptionParser(usage)

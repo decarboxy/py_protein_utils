@@ -1,7 +1,7 @@
 #!/usr/bin/env python2.5
 
-from optparse import OptionParser
-from rosetta import rosettaScore
+from rosettautil.optparse import OptionParser
+from rosettautil.rosetta import rosettaScore
 
 usage = "%prog [options] --term=scoreterm --percent=10 silent.out"
 parser=OptionParser(usage)

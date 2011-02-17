@@ -3,8 +3,8 @@
 import Bio.PDB
 from optparse import OptionParser
 
-from protein import pdbStat
-from rosetta import rosettaScore
+from rosettautil.protein import pdbStat
+from rosettautil.rosetta import rosettaScore
 
 class mutation:
     def __init__(self,resno,nat,des,delta,nat_score,des_score):

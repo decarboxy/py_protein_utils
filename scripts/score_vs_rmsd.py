@@ -1,7 +1,7 @@
 #!/usr/bin/env python2.5
 from optparse import OptionParser
-from protein import pdbStat
-from rosetta import rosettaScore
+from rosettautil.protein import pdbStat
+from rosettautil.rosetta import rosettaScore
 import Bio.PDB
 
 
