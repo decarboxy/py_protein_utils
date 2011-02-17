@@ -2,6 +2,7 @@ import Bio.PDB.Polypeptide
 
 class pssm_map:
 	def __init__(self,path):
+		"""Parse a PSSM file from BLAST into a usable datastructure"""
 		self.pssmmap = {}
 		pssmfile = open(path,'r')
 
@@ -30,6 +31,7 @@ class pssm_map:
 		pssmfile.close()
 	
 	def get_score(self,seqpos,resname):
+		"""get the score for a given sequence position and residue name"""
 		if len(resname) == 3:
 			resname =  Bio.PDB.Polypeptide.three_to_one(resname)
 			linemap = self.pssmmap[seqpos]
@@ -43,6 +45,7 @@ class pssm_map:
 			raise LookupError("this isn't a residue")
 
 	def conserved(self,seqpos,resname):
+		"""return true if the score of a given sequence position and residue name is greater than 0"""
 		score = self.get_score(seqpos,resname)
 		if(score >=0):
 			return True

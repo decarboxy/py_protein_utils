@@ -1,11 +1,13 @@
 from Bio import AlignIO
 
 def get_id_from_tag(alignment,tag):
+    """return the index of an alignment given the alignment tag"""
     for index in range(len(alignment)):
         if(alignment[index].id == tag):
             return index
 
 def find_gaps(alignment,tag):
+    """return a list of tuples defining start and end points of all sequence gaps"""
     gaplist = []
     sequence = None
     for record in alignment:

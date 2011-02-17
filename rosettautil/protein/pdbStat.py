@@ -5,12 +5,13 @@ import math
 
 
 def load_pdb(path):
+	"""return a biopython structure object given a pdb file path"""
 	parser = PDBParser(PERMISSIVE=1)
 	structure = parser.get_structure(path[0:4],path)
 	return structure
 
 def sequence_recovery(native_struct,designed_struct):
-	
+	"""calculate percent sequence recovery between a native and designed struct"""
 	native_residues = native_struct.get_residues()
 	designed_residues = designed_struct.get_residues()
 	total = 0.0;
@@ -23,6 +24,8 @@ def sequence_recovery(native_struct,designed_struct):
 	return recovered/total
 
 def sequence_recovery_range(native_struct,designed_struct,min,max):
+	"""calculate percent sequence recovery between a native and designed
+	struct for all residues between a minimum and maximum b factor """
 	native_residues = native_struct.get_residues()
 	designed_residues = designed_struct.get_residues()
 	total = 0.0
@@ -36,6 +39,9 @@ def sequence_recovery_range(native_struct,designed_struct,min,max):
 	return recovered/total
 
 def sequence_recovery_group(native_struct,designed_struct,min,max):
+	"""calculate sequence recovery by group (non-polar, polar,
+	aromatic, and charged) for all residues between a minimum and
+	maximum b factor"""
 	non_polar = ["GLY","ALA","VAL","LEU","MET","ILE"]
 	polar = ["SER","THR","CYS","PRO","ASN","GLN"]
 	aromatic = ["PHE","TYR","TRP"]
@@ -68,6 +74,7 @@ def sequence_recovery_group(native_struct,designed_struct,min,max):
 	
 
 def sequence_composition(struct):
+	"""calculate sequence composition by residue"""
 	struct_residues = struct.get_residues()
 	composition = {}
 	for residue in struct_residues:
@@ -79,6 +86,8 @@ def sequence_composition(struct):
 	return composition
 	
 def sequence_composition_range(struct,min,max):
+	"""calculate sequence composition for all residues within a
+	minimum and maximum b factor"""
 	struct_residues = struct.get_residues()
 	composition = {}
 	for residue in struct_residues:
@@ -92,6 +101,7 @@ def sequence_composition_range(struct,min,max):
 	return composition
 
 def pssm_recovery_map(struct,pssm_map):
+	"""calculate the pssm recovery given a structure and a pssm map"""
 	struct_residues = struct.get_residues()
 	#pssm_recovery = 0.0;
 	#struct_size = 0.0;
@@ -108,6 +118,8 @@ def pssm_recovery_map(struct,pssm_map):
 	return recovery_map
 
 def pssm_recovery_map_range(struct,pssm_map,min,max):
+	"""calculate the pssm recovery within a range of b factors given a
+	structure and a pssm map"
 	struct_residues = struct.get_residues()
 	recovery_map = {}
 	for residue in struct_residues:
@@ -124,6 +136,7 @@ def pssm_recovery_map_range(struct,pssm_map,min,max):
 	return recovery_map
 
 def pssm_recovery(struct,pssm_map):
+	"""return percent pssm recovery"""
 	struct_residues = struct.get_residues()
 	pssm_recovery = 0.0;
 	struct_size = 0.0;
@@ -137,6 +150,7 @@ def pssm_recovery(struct,pssm_map):
 	return pssm_recovery/struct_size
 
 def pssm_recovery_range(struct,pssm_map,min,max):
+	"""return percent pssm recovery fro residues within a range of b factors"""
 	pssm_recovery = 0.0;
 	struct_size = 0.0;
 	for residue in struct.get_residues():
@@ -153,6 +167,7 @@ def pssm_recovery_range(struct,pssm_map,min,max):
 	return pssm_recovery/struct_size
 
 def pssm_scores(struct,pssm_map):
+	""" return raw pssm total for each residue"""
 	struct_residues = struct.get_residues()
 	pssm_scores = {}
 	size = 0
@@ -170,6 +185,7 @@ def pssm_scores(struct,pssm_map):
 
 
 def pssm_scores_range(struct,pssm_map,min,max):
+	""" return raw pssm total for each residue within a range of pssm scores"""
 	struct_residues = struct.get_residues()
 	pssm_scores = {}
 	size = 0
@@ -190,6 +206,7 @@ def pssm_scores_range(struct,pssm_map,min,max):
 
 
 def ca_rms_only(struct_a,struct_b,residue_list):
+	"""calculate the CA rmsd of two structures using the residues in residue_list"""
 	residues_a = struct_a.get_residues();
 	residues_b = struct_b.get_residues();
 
@@ -210,7 +227,7 @@ def ca_rms_only(struct_a,struct_b,residue_list):
 
 
 def atom_rms(atoms_a,atoms_b,residue_list):
-
+	"""calculate the all atom rmsd given two lists of atoms and a list of residues"""
 	d_2_sum = 0.0
 	resn = 0
 	for(atom_a,atom_b) in zip(atoms_a,atoms_b):
@@ -230,6 +247,7 @@ def atom_rms(atoms_a,atoms_b,residue_list):
 	return rmsd	
 
 def copy_b_factor(native_pdb,designed_pdb):
+	""" copy the b factors from one structure to another"""
 	native_atoms = native_pdb.get_atoms()
 	designed_atoms = designed_pdb.get_atoms()
 	for native_atom, designed_atom in zip(native_atoms, designed_atoms):

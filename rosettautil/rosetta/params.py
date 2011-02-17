@@ -29,6 +29,7 @@ class icoor:
 
 class params:
     def __init__(self,filename):
+        """load a param file into a data structure"""
         self.atoms = {}
         self.bonds = []
         self.icoors = {}

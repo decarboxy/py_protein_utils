@@ -1,6 +1,7 @@
 import operator 
 
 def get_table(path):
+    """return the score table from the bottom of a PDB as a list of lines"""
     raw_table = []
     infile = open(path,'r')
     table = False
