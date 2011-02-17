@@ -2,7 +2,7 @@
 
 from optparse import OptionParser
 import subprocess
-from rosetta import rosettaScore
+from rosettautil.rosetta import rosettaScore
 
 class ClusterItem:
     def __init__(self,tag,cluster_id,struct_index):

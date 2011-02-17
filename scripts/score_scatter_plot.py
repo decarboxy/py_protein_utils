@@ -1,6 +1,6 @@
 #!/usr/bin/env python2.5
 from optparse import OptionParser
-from rosetta import rosettaScore
+from rosettautil.rosetta import rosettaScore
 import sys
 
 usage = "%prog [options] --x_axis=scoreterm --y_axis=scoreterm --silent=silent_file.out output_table.txt"

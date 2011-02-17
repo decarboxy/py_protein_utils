@@ -4,8 +4,8 @@ import Bio.PDB
 from optparse import OptionParser
 import sys
 import array
-from protein import pdbStat
-from protein import alignment
+from rosettautil.protein import pdbStat
+from rosettautil.protein import alignment
 
 
 def list_to_generator(list):
