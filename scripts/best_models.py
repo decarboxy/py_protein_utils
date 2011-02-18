@@ -1,6 +1,6 @@
 #!/usr/bin/env python2.5
 
-from optparser import OptionParser
+from optparse import OptionParser
 from rosettautil.rosetta import rosettaScore
 
 usage = "%prog [options] --term=scoreterm silent files"
