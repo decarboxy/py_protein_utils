@@ -8,13 +8,14 @@ parser=OptionParser(usage)
 parser.add_option("--term",dest="term",help="score term to use")
 (options,args) = parser.parse_args()
 
+scores = rosettaScore.SilentScoreTable()
+
 for silent_file in args:
-    scores = rosettaScore.SilentScoreTable()
     scores.add_file(silent_file)
 
-scores = scores.score_generator(options.term)
+score_gen = scores.score_generator(options.term)
 best_models = {} # key is a structure ID, value is a pair in form (tag,score)
-for tag,score in score_generator:
+for tag,score in score_gen:
     split_tag = tag.split("_")
     model_id = "_".join(split_tag[0:len(split_tag)-1])
     try:
@@ -24,6 +25,6 @@ for tag,score in score_generator:
         continue
     if score < current_best_score:
         best_models[model_id] = (tag,score)
-print "tag",options.scoreterm
+print "tag",options.term
 for tag in best_models:
-    print best_models[tag][0],best_models[tag][0]
+    print best_models[tag][0],best_models[tag][1]
