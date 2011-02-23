@@ -166,7 +166,8 @@ class ScoreTableMap:
         self.table_map = {}
 
     def add_file(self,path):
-        tag = path.split("/")[-1]
+        #tag = path.split("/")[-1]
+        tag=path
         self.table_map[tag]=ScoreTable(path)
 
     def get_score(self,tag,resid,term):
