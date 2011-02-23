@@ -15,21 +15,40 @@ class ClusterItem:
         self.score = score
 
 
-usage = "%prog [options] --rosetta=path/to/cluster/app --database=path/to/database silent.out summary.txt histogram.txt "
+usage = "%prog [options] --rosetta=path/to/cluster/app --database=path/to/database --silent=silent.out summary.txt histogram.txt "
 parser = OptionParser(usage)
 parser.add_option("--rosetta",dest="rosetta",help="path to the rosetta clustering executable")
+parser.add_option("--silent",dest="silent",help="path to silent file",default="")
+parser.add_option("--pdb_list=",dest="pdbs",help="path to list of pdb files",default="")
 parser.add_option("--database",dest="database",help="path to the rosetta database")
 parser.add_option("--flags",dest="flags",help="path to a rosetta flags file.  See http://www.rosettacommons.org/manuals/archive/rosetta3.2_user_guide/cluster_commands.html for flags",default="")
 (options,args) = parser.parse_args()
 
-print "Parsing silent file scores"
-pose_scores = rosettaScore.SilentScoreTable()
-pose_scores.add_file(args[0])
+if options.silent == "" and options.pdbs == "":
+    parser.error("you must specify --silent or --pdb_list")
+elif options.silent != "" and options.pdbs != "":
+    parser.error("you must specify --silent or --pdb_list, but not both")
+
+if options.silent != "":
+    print "Parsing silent file scores"
+    pose_scores = rosettaScore.SilentScoreTable()
+    pose_scores.add_file(options.silent)
+elif options.pdbs != "":
+    print "Parsing pdb file scores"
+    pose_scores = rosettaScore.ScoreTableMap()
+    pdb_list = open(options.pdbs,'r')
+    for pdb in pdb_list:
+        pose_scores.add_file(pdb.rstrip())
+    pdb_list.close()
 
 print "Running cluster"
-command = [options.rosetta,"-mute","all","-unmute","protocols.cluster","-in:file:silent",args[0],"-database",options.database]
+command = [options.rosetta,"-mute","all","-unmute","protocols.cluster","-database",options.database]
 if options.flags != "":
     command.append("@"+options.flags)
+if options.silent != "":
+    command += ["-in:file:silent",options.silent]
+elif options.pdbs != "":
+    command += ["-l",options.pdbs]
 cluster_output = subprocess.Popen(command,stdout=subprocess.PIPE).communicate()[0]
 
 #Here's the deal.  The cluster output is a disaster. It frequently prints iterative summaries,
@@ -100,7 +119,10 @@ for line in cluster_output[last_summary_index:len(cluster_output)]:
         cluster_id = int(line[3])
         struct_index = int(line[4])
         current_item = ClusterItem(tag,cluster_id,struct_index)
-        current_item.set_score(pose_scores.get_score(tag,"score"))
+        if options.silent != "":
+            current_item.set_score(pose_scores.get_score(tag,"score"))
+        elif options.pdbs != "":
+            current_item.set_score(pose_scores.get_score(tag,0,"total"))
         try:
             clusters[cluster_id].append(current_item)
         except KeyError:
@@ -110,7 +132,7 @@ print "Clusters:",num_clusters
 print "Structures:",num_structures
 
 #output the cluster summary to a file
-output_file = open(args[1],'w')
+output_file = open(args[0],'w')
 output_file.write("tag\tfile_name\tscore\tsize\n")
 for key in clusters:
     cluster_list = clusters[key]
@@ -127,7 +149,7 @@ for bin,count in histogram:
 bin_line +=  "\n"
 count_line += "\n"
 
-histogram_file = open(args[2],'w')
+histogram_file = open(args[1],'w')
 histogram_file.write(bin_line)
 histogram_file.write(count_line)
 histogram_file.close()
