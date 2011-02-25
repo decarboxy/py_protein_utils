@@ -23,7 +23,8 @@ setup(
     packages = ['rosettautil',
                 'rosettautil.graphics',
                 'rosettautil.protein',
-                'rosettautil.rosetta'
+                'rosettautil.rosetta',
+                'rosettautil.util'
                 ],
     scripts = [
                 'scripts/best_models.py',
