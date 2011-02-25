@@ -1,6 +1,7 @@
 #!/usr/bin/env python2.5
 import sys
 from rosettautil.rosetta import rosettaScore
+from rosettautil.util import fileutil
 from Bio.PDB import *
 from optparse import OptionParser
 
@@ -39,6 +40,6 @@ io.save(args[1])
 
 if(options.table):
     raw_table = rosettaScore.get_table(args[0])
-    outfile = open(args[1],'a')
+    outfile = fileutil.universal_open(args[1],'a')
     outfile.writelines(raw_table)
     outfile.close()
