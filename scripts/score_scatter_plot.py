@@ -1,6 +1,7 @@
 #!/usr/bin/env python2.5
 from optparse import OptionParser
 from rosettautil.rosetta import rosettaScore
+from rosettautil.util import fileutil
 import sys
 
 usage = "%prog [options] --x_axis=scoreterm --y_axis=scoreterm --silent=silent_file.out output_table.txt"
@@ -29,7 +30,7 @@ if options.silent != "":
         data.append( (x_tag,x_point[1],y_point[1]) )
 
 if options.pdb_list != "":
-    pdb_list = open(options.pdb_list,"rU")
+    pdb_list = fileutil.universal_open(options.pdb_list,"rU")
     for pdb in pdb_list:
         scores = rosettaScore.ScoreTable(pdb.rstrip())
         x_score = scores.get_score(0,options.x_axis) #residue 0 is the total energy for the pose
@@ -38,7 +39,7 @@ if options.pdb_list != "":
     pdb_list.close()
 
 #now we have the data, so we output it
-output_file = open(args[0],'w')
+output_file = fileutil.universal_open(args[0],'w')
 output_file.write("tag\t"+options.x_axis+"\t"+options.y_axis+"\n")
 for tag,x_score,y_score in data:
     output_file.write(tag+"\t"+str(x_score)+"\t"+str(y_score)+"\n")
