@@ -23,7 +23,7 @@ parser.add_option("--rosetta",dest="rosetta",help="path to the rosetta clusterin
 parser.add_option("--silent",dest="silent",help="path to silent file",default="")
 parser.add_option("--pdb_list=",dest="pdbs",help="path to list of pdb files",default="")
 parser.add_option("--database",dest="database",help="path to the rosetta database")
-parser.add_option("--flags",dest="flags",help="path to a rosetta flags file.  See http://www.rosettacommons.org/manuals/archive/rosetta3.2_user_guide/cluster_commands.html for flags",default="")
+parser.add_option("--options",dest="options",help="path to a rosetta options file.  See http://www.rosettacommons.org/manuals/archive/rosetta3.2_user_guide/cluster_commands.html for options",default="")
 (options,args) = parser.parse_args()
 
 if options.silent == "" and options.pdbs == "":
@@ -45,8 +45,8 @@ elif options.pdbs != "":
 
 print "Running cluster"
 command = [options.rosetta,"-mute","all","-unmute","protocols.cluster","-database",options.database]
-if options.flags != "":
-    command.append("@"+options.flags)
+if options.options != "":
+    command.append("@"+options.options)
 if options.silent != "":
     command += ["-in:file:silent",options.silent]
 elif options.pdbs != "":
