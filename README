@@ -10,7 +10,7 @@ rosetta - Classes and functions for parsing file formats specific to rosetta
 protein - Classes and functions for manipulation protein structural data (requires biopython)
 
 to install this package type:
-python setup.py install
+python setup.py install --install-scripts=/script/install/directory
 
 To get the latest version, go to:
 https://github.com/decarboxy/py_protein_utils/

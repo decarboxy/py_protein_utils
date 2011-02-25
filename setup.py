@@ -10,7 +10,8 @@ except ImportError:
 try:
     import matplotlib
 except ImportError:
-    sys.exit("matplotlib is not installed, you won't be able to use the graphics libraries")
+    print "matplotlib is not installed, so you won't be able to use the graphics library"
+    #sys.exit("matplotlib is not installed, you won't be able to use the graphics libraries")
 
 setup(
     name='rosettautils',
