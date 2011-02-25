@@ -1,10 +1,11 @@
 import Bio.PDB.Polypeptide
+from rosettautil.util import fileutil
 
 class pssm_map:
 	def __init__(self,path):
 		"""Parse a PSSM file from BLAST into a usable datastructure"""
 		self.pssmmap = {}
-		pssmfile = open(path,'r')
+		pssmfile = fileutil.universal_open(path,'r')
 
 		
 		pssmfile.readline()

@@ -2,15 +2,14 @@
 from optparse import OptionParser
 from rosettautil.protein import pdbStat
 from rosettautil.rosetta import rosettaScore
+from rosettautil.util import fileutil
 import Bio.PDB
 
 
 def make_table(name_score_rmsd,out_name):
-    table = open(out_name,'w')
+    table = fileutil.universal_open(out_name,'w')
     table.write("file\tscore\tRMSD\n")
     for point in name_score_rmsd:
-        #fields = line.split()
-        #table.write(fields[0]+"\t"+fields[2]+"\t"+fields[1]+"\n")
         table.write(str(point[0])+"\t"+str(point[2])+"\t"+str(point[1])+"\n")
     table.close()
 

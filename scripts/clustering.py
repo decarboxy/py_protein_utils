@@ -3,6 +3,8 @@
 from optparse import OptionParser
 import subprocess
 from rosettautil.rosetta import rosettaScore
+from rosettautil.util import fileutil
+
 
 class ClusterItem:
     def __init__(self,tag,cluster_id,struct_index):
@@ -132,7 +134,11 @@ print "Clusters:",num_clusters
 print "Structures:",num_structures
 
 #output the cluster summary to a file
+<<<<<<< HEAD
 output_file = open(args[0],'w')
+=======
+output_file = fileutil.universal_open(args[1],'w')
+>>>>>>> gzip
 output_file.write("tag\tfile_name\tscore\tsize\n")
 for key in clusters:
     cluster_list = clusters[key]
@@ -149,7 +155,8 @@ for bin,count in histogram:
 bin_line +=  "\n"
 count_line += "\n"
 
-histogram_file = open(args[1],'w')
+
+histogram_file = fileutil.universal_open(args[1],'w')
 histogram_file.write(bin_line)
 histogram_file.write(count_line)
 histogram_file.close()

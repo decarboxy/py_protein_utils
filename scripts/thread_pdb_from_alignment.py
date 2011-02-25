@@ -6,6 +6,7 @@ import sys
 import array
 from rosettautil.protein import pdbStat
 from rosettautil.protein import alignment
+from rosettautil.util import fileutil
 
 
 def list_to_generator(list):
@@ -22,7 +23,7 @@ parser.add_option("--align_format",dest="align_format",help="alignment file form
 (options,args)= parser.parse_args()
 
 #read in our input files
-alignment_file = open(args[0],'rU')
+alignment_file = fileutil.universal_open(args[0],'rU')
 alignment_data = AlignIO.read(alignment_file,options.align_format)
 alignment_file.close()
 template_struct = pdbStat.load_pdb(args[1])
@@ -117,4 +118,6 @@ for align_resn, temp_resn in zip(alignment_data[alignment_id],alignment_data[tem
 output_struct = output_structure_builder.get_structure()
 pdb_io = Bio.PDB.PDBIO()
 pdb_io.set_structure(output_struct)
-pdb_io.save(args[2])
+outfile = fileutil.universal_open(args[2],'w')
+pdb_io.save(outfile)
+outfile.close()

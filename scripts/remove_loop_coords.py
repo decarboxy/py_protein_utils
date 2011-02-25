@@ -6,6 +6,7 @@ from optparse import OptionParser
 
 from rosettautil.protein import pdbStat
 from rosettautil.rosetta import loops
+from rosettautil.util import fileutil
 
 usage = "%prog [options] loopfile.txt input.pdb output.pdb"
 parser=OptionParser(usage)
@@ -25,4 +26,6 @@ for atom in input_struct.get_atoms():
 
 pdb_io = Bio.PDB.PDBIO()
 pdb_io.set_structure(input_struct)
-pdb_io.save(args[2])
+outfile = fileutil.universal_open(args[2],'w')
+pdb_io.save(outfile)
+outfile.close()
