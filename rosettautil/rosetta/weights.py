@@ -1,3 +1,4 @@
+from rosettautil.util import fileutil
 aa_codes_in_order = ["ALA","CYS","ASP","GLU","PHE","GLY","HIS","ILE","LYS","LEU","MET","ASN","PRO","GLN","ARG","SER","THR","VAL","TRP","TYR"]
 
 class WeightFile:
@@ -8,7 +9,7 @@ class WeightFile:
         self.ref_energies = {}
         self.weights = {}
         
-        in_file = open(filename,'rU')
+        in_file = fileutil.universal_open(filename,'rU')
         for line in in_file:
             line = line.split()
             if line[0] == "METHOD_WEIGHTS":
@@ -20,7 +21,7 @@ class WeightFile:
         in_file.close()
     
     def write_file(self,filename):
-        out_file = open(filename,'w')
+        out_file = fileutil.universal_open(filename,'w')
         
         #write reference energies
         out_file.write("METHOD_WEIGHTS\tref")

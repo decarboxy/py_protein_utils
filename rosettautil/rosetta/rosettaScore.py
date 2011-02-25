@@ -1,9 +1,10 @@
 import operator 
+from rosettautil.util import fileutil
 
 def get_table(path):
     """return the score table from the bottom of a PDB as a list of lines"""
     raw_table = []
-    infile = open(path,'r')
+    infile = fileutil.universal_open(path,'r')
     table = False
     for line in infile:
         line_split = line.split()
@@ -53,7 +54,7 @@ class SilentScoreTable:
         return len(self.records)
         
     def add_file(self,path,ignore_ref=True):
-        infile = open(path,'r')
+        infile = fileutil.universal_open(path,'r')
         header=[]
         for line in infile:
             if len(line)== 0:
@@ -118,7 +119,7 @@ class SilentScoreTable:
         
 class ScoreTable:
     def __init__(self,path):
-        infile = open(path,'r')
+        infile = fileutil.universal_open(path,'r')
         table = False
         header=[]
         self.weights = {}

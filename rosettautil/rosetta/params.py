@@ -1,5 +1,5 @@
 from Bio.PDB import *
-
+from rosettautil.util import fileutil
 class Atom:
     def __init__(self,name,type,chain,charge):
         self.name = name
@@ -33,7 +33,7 @@ class params:
         self.atoms = {}
         self.bonds = []
         self.icoors = {}
-        infile = open(filename,'r')
+        infile = fileutil.universal_open(filename,'r')
         for line in infile:
             if len(line)==0:
                 continue
@@ -62,6 +62,7 @@ class params:
             elif tag == "ICOOR_INTERNAL":
                 current_icoor = icoor(line[1],line[2],line[3],line[4],line[5],line[6],line[7])
                 self.icoors[line[1]]=current_icoor
+        infile.close()
 
     def get_atom(self,name):
         return self.atoms[name]

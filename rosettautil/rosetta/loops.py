@@ -1,3 +1,5 @@
+from rosettautil.util import fileutil
+
 class RosettaLoop:
     def __init__(self):
         """initialize an empty loop oject"""
@@ -46,7 +48,7 @@ class RosettaLoopManager:
         if append=True, add the contents of the loop file to the existing loops"""
         if not append:
             self.looplist = []
-        loop_file = open(filename,"rU")
+        loop_file = fileutil.universal_open(filename,"rU")
         for line in loop_file:
             loop = RosettaLoop()
             loop.set_loop_from_string(line)
@@ -55,7 +57,7 @@ class RosettaLoopManager:
     
     def write(self,filename):
         """write the contents of the loop manager to a Rosetta3 loop file"""
-        loop_file = open(filename,"w")
+        loop_file = fileutil.universal_open(filename,"w")
         for loop in self.looplist:
             loop_file.write(loop.to_string()+"\n")
         loop_file.close()
