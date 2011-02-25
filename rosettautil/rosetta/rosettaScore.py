@@ -160,3 +160,19 @@ class ScoreTable:
 
     def get_weight(self,term):
         return self.weights[term]
+
+class ScoreTableMap:
+    def __init__(self):
+        self.table_map = {}
+
+    def add_file(self,path):
+        #tag = path.split("/")[-1]
+        tag=path
+        self.table_map[tag]=ScoreTable(path)
+
+    def get_score(self,tag,resid,term):
+        return self.table_map[tag].get_score(resid,term)
+
+    def get_weight(self,tag,term):
+        return self.table_map[tag].get_weight(term)
+
