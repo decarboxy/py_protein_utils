@@ -7,10 +7,10 @@ try:
 except ImportError:
     sys.exit("Biopython must be installed")
 
-try:
-    import matplotlib
-except ImportError:
-    print "matplotlib is not installed, so you won't be able to use the graphics library"
+#try:
+#    import matplotlib
+#except ImportError:
+#    print "matplotlib is not installed, so you won't be able to use the graphics library"
     #sys.exit("matplotlib is not installed, you won't be able to use the graphics libraries")
 
 setup(
@@ -21,7 +21,6 @@ setup(
     author_email='samuel.l.deluca@vanderbilt.edu',
     url='https://github.com/decarboxy/py_protein_utils/',
     packages = ['rosettautil',
-                'rosettautil.graphics',
                 'rosettautil.protein',
                 'rosettautil.rosetta',
                 'rosettautil.util'
