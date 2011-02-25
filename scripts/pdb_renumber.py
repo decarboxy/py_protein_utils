@@ -36,10 +36,11 @@ for residue in struct.get_residues():
     
 io=PDBIO()
 io.set_structure(struct)
-io.save(args[1])
+outfile = fileutil.universal_open(args[1],'w')
+io.save(outfile)
 
 if(options.table):
     raw_table = rosettaScore.get_table(args[0])
-    outfile = fileutil.universal_open(args[1],'a')
+    #outfile = fileutil.universal_open(args[1],'a')
     outfile.writelines(raw_table)
-    outfile.close()
+outfile.close()
