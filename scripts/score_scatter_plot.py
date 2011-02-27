@@ -9,6 +9,7 @@ parser = OptionParser(usage)
 parser.add_option("--x_axis",dest="x_axis",help="score term to plot on x axis")
 parser.add_option("--y_axis",dest="y_axis",help="score term to plot on y axis")
 parser.add_option("--silent",dest="silent",help="path to silent file",default="")
+parser.add_option("--silent_list",dest="silent_list",help="path to list of silent files",default="")
 parser.add_option("--pdbs",dest="pdb_list",help="path to list fo pdb files",default="")
 (options,args) = parser.parse_args()
 
@@ -28,7 +29,20 @@ if options.silent != "":
         if x_tag != y_tag:
             sys.exit("tags aren't equal, something is very wrong")
         data.append( (x_tag,x_point[1],y_point[1]) )
-
+elif options.silent_list != "":
+    silent_list = fileutil.universal_open(options.pdb_list,"rU")
+    for path in silent_list:
+        scores = rosettaScore.SilentScoreTable()
+        scores.add_file(path)
+        x_axis_scores = scores.score_generator(options.x_axis)
+        y_axis_scores = scores.score_generator(options.y_axis)
+        for x_point, y_point in zip(x_axis_scores,y_axis_scores):
+            x_tag= x_point[0]
+            y_tag = y_point[0]
+            if x_tag != y_tag:
+                sys.exit("tags aren't equal, something is very wrong")
+            data.append( (x_tag,x_point[1],y_point[1]) )
+    
 if options.pdb_list != "":
     pdb_list = fileutil.universal_open(options.pdb_list,"rU")
     for pdb in pdb_list:
