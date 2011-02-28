@@ -13,7 +13,7 @@ parser.add_option("--silent_list",dest="silent_list",help="path to list of silen
 parser.add_option("--pdbs",dest="pdb_list",help="path to list fo pdb files",default="")
 (options,args) = parser.parse_args()
 
-if options.silent == "" and options.pdb_list == "":
+if options.silent == "" and options.pdb_list == "" and options.silent_list=="":
     parser.error("you must specify --silent or --pdbs")
 
 data = [] #list of tuples in form (tag,x_score,y_score)
@@ -30,10 +30,10 @@ if options.silent != "":
             sys.exit("tags aren't equal, something is very wrong")
         data.append( (x_tag,x_point[1],y_point[1]) )
 elif options.silent_list != "":
-    silent_list = fileutil.universal_open(options.pdb_list,"rU")
+    silent_list = fileutil.universal_open(options.silent_list,"rU")
     for path in silent_list:
         scores = rosettaScore.SilentScoreTable()
-        scores.add_file(path)
+        scores.add_file(path.rstrip())
         x_axis_scores = scores.score_generator(options.x_axis)
         y_axis_scores = scores.score_generator(options.y_axis)
         for x_point, y_point in zip(x_axis_scores,y_axis_scores):
