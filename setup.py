@@ -23,6 +23,7 @@ setup(
     packages = ['rosettautil',
                 'rosettautil.protein',
                 'rosettautil.rosetta',
+		'rosettautil.bcl',
                 'rosettautil.util'
                 ],
     scripts = [
@@ -34,6 +35,7 @@ setup(
                 'scripts/score_vs_rmsd.py',
                 'scripts/sequence_recovery.py',
                 'scripts/thread_pdb_from_alignment.py',
-                'scripts/top_n_percent.py'
+                'scripts/top_n_percent.py',
+		'scripts/tabbed_to_bcl.py'
                 ]
     )
