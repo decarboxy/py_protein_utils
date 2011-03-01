@@ -30,6 +30,7 @@ class ScoreRecord:
 class PoseScoreRecord:
     def __init__(self,tag):
         self.tag = tag
+        self.path = ""
         self.score = {}
     def add_score(self,name,value):
         self.score[name] = value
@@ -39,6 +40,12 @@ class PoseScoreRecord:
     
     def get_tag(self):
         return self.tag
+
+    def set_file(self,path):
+        self.path=path
+
+    def get_file(self):
+        return self.path
 
 def score_pairs(list):
     for i in xrange(0,len(list),2):
@@ -66,7 +73,7 @@ class SilentScoreTable:
                     continue
                     
                 record = PoseScoreRecord(tag)
-                
+                record.set_file(path)
                 scorefields = line[2:len(line)]
                 try:
                     for pair in score_pairs(scorefields):
@@ -82,6 +89,7 @@ class SilentScoreTable:
                 else: #this is a score line
                     tag = line[-1] #the last item is the tag
                     record = PoseScoreRecord(tag)
+                    record.set_file(path)
                     for term,score in zip(header,line[1:len(line)-1]):
 			try:
 				record.add_score(term,float(score))
@@ -115,6 +123,9 @@ class SilentScoreTable:
         scores = sorted(scores,key= lambda x: x[1])
         for score in scores:
             yield score
+
+    def get_file_from_tag(self,tag):
+        return self.records[tag].get_file()
                 
         
 class ScoreTable:

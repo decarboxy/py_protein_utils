@@ -18,13 +18,15 @@ best_models = {} # key is a structure ID, value is a pair in form (tag,score)
 for tag,score in score_gen:
     split_tag = tag.split("_")
     model_id = "_".join(split_tag[0:len(split_tag)-1])
+    file = scores.get_file_from_tag(tag)
     try:
-        (current_best_tag,current_best_score) = best_models[model_id]
+        (file,current_best_tag,current_best_score) = best_models[model_id]
     except KeyError:
-        best_models[model_id] = (tag,score)
+        best_models[model_id] = (file,tag,score)
         continue
     if score < current_best_score:
-        best_models[model_id] = (tag,score)
+        best_models[model_id] = (file,tag,score)
 print "tag",options.term
 for tag in best_models:
-    print best_models[tag][0],best_models[tag][1]
+    print best_models[tag][0],best_models[tag][1],best_models[tag][2]
+    
