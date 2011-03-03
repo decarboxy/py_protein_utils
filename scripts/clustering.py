@@ -135,7 +135,7 @@ print "Structures:",num_structures
 
 #output the cluster summary to a file
 
-output_file = fileutil.universal_open(args[1],'w')
+output_file = fileutil.universal_open(args[0],'w')
 output_file.write("tag\tfile_name\tscore\tsize\n")
 for key in clusters:
     cluster_list = clusters[key]
