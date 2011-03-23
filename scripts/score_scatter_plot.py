@@ -56,5 +56,5 @@ if options.pdb_list != "":
 output_file = fileutil.universal_open(args[0],'w')
 output_file.write("tag\t"+options.x_axis+"\t"+options.y_axis+"\n")
 for tag,x_score,y_score in data:
-    output_file.write(tag+"\t"+str(x_score)+"\t"+str(y_score)+"\n")
+    output_file.write(tag.rstrip()+"\t"+str(x_score)+"\t"+str(y_score)+"\n")
 output_file.close()
