@@ -65,7 +65,7 @@ class RosettaLoopManager:
     def is_res_in_loop(self,resnum):
         """Return true if a given residue is inside a loop"""
         for loop in self.looplist:
-            if loop.start <= resnum and loop.end >= resnum:
+            if loop.start < resnum and loop.end > resnum:
                 return True
         return False
         

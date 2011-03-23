@@ -132,6 +132,7 @@ class ScoreTable:
     def __init__(self,path):
         infile = fileutil.universal_open(path,'r')
         table = False
+        appended_data = False
         header=[]
         self.weights = {}
         self.records = {}
@@ -140,9 +141,9 @@ class ScoreTable:
                 continue
             line = line.split()
             if line[0] == "#BEGIN_POSE_ENERGIES_TABLE":
-                table =True
+                table = True
             elif line[0] == "#END_POSE_ENERGIES_TABLE":
-                break
+                appended_data = True
             elif table and line[0] == "label":
                 header = line[1:len(line)]
             elif table and line[0] =="weights":
@@ -153,7 +154,7 @@ class ScoreTable:
                         self.weights[term] = weight
                     else:
                         self.weights[term] = 1.0
-            elif table:
+            elif table and not appended_data:
                 name = line[0]
                 if name != "pose":
                     resid = int(name.split("_").pop())
@@ -165,6 +166,17 @@ class ScoreTable:
                     score = float(score)
                     scoredict[term] = score
                 self.records[resid] = ScoreRecord(name,resid,scoredict)
+            elif table and appended_data:
+                if len(line) < 2:
+                    continue
+                #all these apply to the whole pose, so we'll extract the scoredict for the pose
+                #this *must* come after the pose table, so we can get the whole set
+                term = line[0]
+                value = line[1]
+                try:
+                    self.records[0].scores[term] = float(value)
+                except ValueError:
+                    self.records[0].scores[term] = value
         infile.close()
     def get_score(self,resid,term):
         score_record = self.records[resid]

@@ -134,11 +134,9 @@ print "Clusters:",num_clusters
 print "Structures:",num_structures
 
 #output the cluster summary to a file
-<<<<<<< HEAD
-output_file = open(args[0],'w')
-=======
-output_file = fileutil.universal_open(args[1],'w')
->>>>>>> gzip
+
+output_file = fileutil.universal_open(args[0],'w')
+
 output_file.write("tag\tfile_name\tscore\tsize\n")
 for key in clusters:
     cluster_list = clusters[key]

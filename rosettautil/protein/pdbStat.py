@@ -229,23 +229,19 @@ def ca_rms_only(struct_a,struct_b,residue_list):
 	return rmsd
 
 
-def atom_rms(atoms_a,atoms_b,residue_list):
+def atom_rms(atoms_a,atoms_b,residue_list=""):
 	"""calculate the all atom rmsd given two lists of atoms and a list of residues"""
 	d_2_sum = 0.0
 	resn = 0
 	for(atom_a,atom_b) in zip(atoms_a,atoms_b):
 		parent_a = atom_a.get_parent()
-		if parent_a.get_id()[1] in residue_list:
+		if parent_a.get_id()[1] in residue_list or residue_list == "":
 			#print "calculating for",parent_a.get_id()[1]
 			distance_2 = (atom_a-atom_b)**2
 			d_2_sum += distance_2
 			resn +=1
 		else:
 			continue
-			
-
-
-	
 	rmsd = math.sqrt(d_2_sum/resn)
 	return rmsd	
 
