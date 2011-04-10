@@ -4,7 +4,7 @@ import array
 import Bio.PDB
 from optparse import OptionParser
 
-from rosettautil.protein import pdbStat
+from rosettautil.protein import util
 from rosettautil.rosetta import loops
 from rosettautil.util import fileutil
 

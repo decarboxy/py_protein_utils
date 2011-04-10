@@ -4,7 +4,7 @@ import Bio.PDB
 from optparse import OptionParser
 import sys
 import array
-from rosettautil.protein import pdbStat
+from rosettautil.protein import util
 from rosettautil.protein import alignment
 from rosettautil.util import fileutil
 
@@ -26,7 +26,7 @@ parser.add_option("--align_format",dest="align_format",help="alignment file form
 alignment_file = fileutil.universal_open(args[0],'rU')
 alignment_data = AlignIO.read(alignment_file,options.align_format)
 alignment_file.close()
-template_struct = pdbStat.load_pdb(args[1])
+template_struct = util.load_pdb(args[1])
 
 #if len(alignment_data)  != 2:
 #    sys.exit("alignment file must have exactly 2 sequences!") 
