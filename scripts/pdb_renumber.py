@@ -1,6 +1,7 @@
 #!/usr/bin/env python2.5
 import sys
 from rosettautil.rosetta import rosettaScore
+from rosettautil.protein import util
 from rosettautil.util import fileutil
 from Bio.PDB import *
 from optparse import OptionParser
@@ -13,11 +14,13 @@ parser.add_option("--norestart",dest="norestart",help="don't start renumbering a
 parser.add_option("--keep-table",dest="table",help="Preserve the rosetta score table at the bottom of the pdb",action="store_true",default=False)
 (options, args) = parser.parse_args()
 
-#cores = rosettaScore.ScoreTable(args[0])
 
-PDBparse = PDBParser(PERMISSIVE=1)
-struct = PDBparse.get_structure(args[0][0:3],args[0])
-residue_id = int(options.start)
+struct = util.load_pdb(args[0])
+try:
+    residue_id = int(options.start)
+except ValueError:
+    sys.exit("residue number specified with -n must be an integer")
+    
 chain_id = ""
 for residue in struct.get_residues():
     chain = residue.get_parent()
