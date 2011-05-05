@@ -1,6 +1,7 @@
 import sys
 import PSSM
 from Bio.PDB import * 
+from Bio import pairwise2
 from rosettautil.util import fileutil
 import math
 
@@ -300,3 +301,17 @@ def calculate_rms(native,decoy,ca_mode,residues,rms_residues,chain):
         return pdbStat.atom_rms(native_atoms,decoy_atoms,rms_residue_set)
     else:
         return superpose.rms
+
+def find_gaps(pdb,sequence):
+    """return a sequence with gaps in the pdb represented by - symbols"""
+    #we can't trust the seqres record, it might not even exist, so get the sequence by looping through all the residues
+    pdb_sequence = ""
+    for residue in pdb.get_residues():
+        residue_name = Polypeptide.three_to_one(residue.get_resname())
+        pdb += residue_name
+    
+    #now we align the two sequences
+    alignment = pairwise2.align.globalxx(pdb_sequence,sequence)
+    return alignment[0][1]
+    
+        
