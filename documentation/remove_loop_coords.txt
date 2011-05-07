@@ -1,5 +1,5 @@
 Procedure
-1. execute the command "$ROSETTA_SCRIPTS/remove_loop_coords.py loopfile.txt input.pdb output.pdb"
+1. Replace the coordinates of loop regions in the pdb with zeros by executing the command "$ROSETTA_SCRIPTS/remove_loop_coords.py loopfile.txt input.pdb output.pdb"
 
 Timing
 
