@@ -1,6 +1,6 @@
 #!/usr/bin/env python2.5
 from optparse import OptionParser
-from rosettautil.protein import pdbStat
+from rosettautil.protein import util
 from rosettautil.rosetta import rosettaScore
 from rosettautil.util import fileutil
 import Bio.PDB
@@ -32,7 +32,7 @@ if options.ca:
 else:
     print "calculating all-atom RMSD"
 
-native = pdbStat.load_pdb(options.native)
+native = util.load_pdb(options.native)
 score_rmsd = []
 name_score_rmsd =[]
 for decoy_file in args:

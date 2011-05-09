@@ -1,4 +1,5 @@
 from rosettautil.util import fileutil
+import sys
 
 class RosettaLoop:
     def __init__(self):
@@ -20,11 +21,16 @@ class RosettaLoop:
     def set_loop_from_string(self,loopstring):
         """fill a loop from a line of a Rosetta3 loop file"""
         loop_array = loopstring.split()
-        self.start = int(loop_array[1])
-        self.end = int(loop_array[2])
-        self.cutpoint = int(loop_array[3])
-        self.skip = float(loop_array[4])
-        if loop_array[4] =="0":  #this is the way it works in C++, we'll mimic it here for compatability
+        if len(loop_array) != 5:
+            sys.exit("loop lines must be in this form: LOOP start end cutpoint skip extend")
+        try:
+            self.start = int(loop_array[1])
+            self.end = int(loop_array[2])
+            self.cutpoint = int(loop_array[3])
+            self.skip = float(loop_array[4])
+        except ValueError:
+            sys.exit("start, end, cutpoint and skip all need to be numbers")
+        if loop_array[5] =="0":  #this is the way it works in C++, we'll mimic it here for compatability
             self.extend = False
         else:
             self.extend = True
@@ -50,6 +56,13 @@ class RosettaLoopManager:
             self.looplist = []
         loop_file = fileutil.universal_open(filename,"rU")
         for line in loop_file:
+            fields = line.split()
+            if line[0] == '#':
+                continue #this is a comment
+            if len(fields <1):
+                continue #this is a blank line
+            if fields[0] != "LOOP":
+                continue #this is something that is not a loop line
             loop = RosettaLoop()
             loop.set_loop_from_string(line)
             self.looplist.append(loop)

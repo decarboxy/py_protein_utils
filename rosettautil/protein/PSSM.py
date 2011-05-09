@@ -41,7 +41,6 @@ class pssm_map:
 		elif len(resname) == 1:
 			linemap = self.pssmmap[seqpos]
 			return linemap[resname]
-		
 		else:
 			raise LookupError("this isn't a residue")
 

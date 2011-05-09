@@ -4,8 +4,9 @@ import Bio.PDB
 from optparse import OptionParser
 import sys
 import array
-from rosettautil.protein import pdbStat
+from rosettautil.protein import util
 from rosettautil.protein import alignment
+from rosettautil.protein import pdbStat
 from rosettautil.util import fileutil
 
 
@@ -21,21 +22,40 @@ parser.add_option("--alignment", dest ="alignment",help="name of the alignment s
 parser.add_option("--chain",dest="chain",help="chain to thread pdb around",default="A")
 parser.add_option("--align_format",dest="align_format",help="alignment file format, choose from clustal, emboss, fasta, fasta-m10,ig,nexus,phylip,stockholm.  See http://biopython.org/wiki/AlignIO for details",default="clustal")
 (options,args)= parser.parse_args()
+if len(args) != 3:
+    parser.error("you must specify an alignment file, template pdb, and output pdb")
 
 #read in our input files
 alignment_file = fileutil.universal_open(args[0],'rU')
 alignment_data = AlignIO.read(alignment_file,options.align_format)
 alignment_file.close()
-template_struct = pdbStat.load_pdb(args[1])
+template_struct = util.load_pdb(args[1])
 
 #if len(alignment_data)  != 2:
 #    sys.exit("alignment file must have exactly 2 sequences!") 
 
 #find all the gaps, get numeric IDs from the string tags in the alignment file
-template_gaps = alignment.find_gaps(alignment_data,options.template)
-alignment_gaps = alignment.find_gaps(alignment_data,options.alignment)
-template_id = alignment.get_id_from_tag(alignment_data,options.template)
-alignment_id = alignment.get_id_from_tag(alignment_data,options.alignment)
+try:
+    template_gaps = alignment.find_gaps(alignment_data,options.template)
+except LookupError:
+    sys.exit("could not find "+options.template+" in alignment file")
+try:    
+    alignment_gaps = alignment.find_gaps(alignment_data,options.alignment)
+except LookupError:
+    sys.exit("could not find "+options.alignment+" in alignment file")
+try:
+    template_id = alignment.get_id_from_tag(alignment_data,options.template)
+except LookupError:
+    sys.exit("could not find "+options.template+" in alignment file")
+try:
+    alignment_id = alignment.get_id_from_tag(alignment_data,options.alignment)
+except LookupError:
+    sys.exit("could not find "+options.alignment+" in alignment file")
+
+#there might be missing density in our pdb file.  Align the template sequence to the pdb file
+#and return a gapped sequence.  We will use this in conjunction with the template and alignment sequence
+template_sequence = alignment_data[alignment.get_id_from_tag(alignment_data,options.template)]
+gapped_template = pdbStat.find_gaps(template_struct,template_sequence)
 
 #if you have an alignment gap thats larger than 3 aa, this script won't work
 for gap in alignment_gaps:
@@ -58,11 +78,11 @@ for chain in template_struct.get_chains():
 #template_residues = template_struct.get_chains()
 sequence_num = 1 #the pdb sequence number
 atom_num = 1 #the atom id
-for align_resn, temp_resn in zip(alignment_data[alignment_id],alignment_data[template_id]):
+for align_resn, temp_resn,gap_temp_resn in zip(alignment_data[alignment_id],alignment_data[template_id],gapped_template):
     #print align_resn, temp_resn
     if align_resn == '-' and temp_resn == '-':  #this shouldn't happen, but it is safe to ignore
         continue
-    elif align_resn != '-' and temp_resn == '-': #gap in the template, not in the alignment, build a loop
+    elif align_resn != '-' and (temp_resn == '-' or gap_temp_resn == '-'): #gap in the template (or pdb), not in the alignment, build a loop
         align_name3 = Bio.PDB.Polypeptide.one_to_three(align_resn)
         output_structure_builder.init_residue(align_name3," ",sequence_num," ")
         zero_triplet = array.array('f',[0.0,0.0,0.0])

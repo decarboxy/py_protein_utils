@@ -19,12 +19,17 @@ class ClusterItem:
 
 usage = "%prog [options] --rosetta=path/to/cluster/app --database=path/to/database --silent=silent.out summary.txt histogram.txt "
 parser = OptionParser(usage)
-parser.add_option("--rosetta",dest="rosetta",help="path to the rosetta clustering executable")
+parser.add_option("--rosetta",dest="rosetta",help="path to the rosetta clustering executable",default="")
 parser.add_option("--silent",dest="silent",help="path to silent file",default="")
 parser.add_option("--pdb_list=",dest="pdbs",help="path to list of pdb files",default="")
 parser.add_option("--database",dest="database",help="path to the rosetta database")
 parser.add_option("--options",dest="options",help="path to a rosetta options file.  See http://www.rosettacommons.org/manuals/archive/rosetta3.2_user_guide/cluster_commands.html for options",default="")
 (options,args) = parser.parse_args()
+
+if len(args) != 2:
+    parser.error("you must specify the path to a summary file and a histogram file")
+
+
 
 if options.silent == "" and options.pdbs == "":
     parser.error("you must specify --silent or --pdb_list")
@@ -53,7 +58,7 @@ elif options.pdbs != "":
     command += ["-l",options.pdbs]
 cluster_output = subprocess.Popen(command,stdout=subprocess.PIPE).communicate()[0]
 
-#Here's the deal.  The cluster output is a disaster. It frequently prints iterative summaries,
+#Here's the deal:  The cluster output is a disaster. It frequently prints iterative summaries,
 #but we are only interested in the last summary, since that is what gets output
 #This keeps us from parsing through the output in one pass.  Luckily for us, a summary line looks like:
 #protocols.cluster: ---------- Summary ---------------------------------

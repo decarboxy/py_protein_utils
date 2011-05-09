@@ -5,6 +5,7 @@ def get_id_from_tag(alignment,tag):
     for index in range(len(alignment)):
         if(alignment[index].id == tag):
             return index
+    raise LookupError("invalid tag specified")
 
 def find_gaps(alignment,tag):
     """return a list of tuples defining start and end points of all sequence gaps"""
@@ -14,6 +15,8 @@ def find_gaps(alignment,tag):
         if(record.id == tag): #as far as I can tell I can only iterate through an alignment, I can't lookup by tag
             sequence = record
             break
+    if sequence == None:
+        raise LookupError("invalid tag specified")
     resid = 1
     gap_start = 1
     gap_end = 1

@@ -8,11 +8,8 @@ parser=OptionParser(usage)
 parser.add_option("--term",dest="term",help="score term to use")
 (options,args) = parser.parse_args()
 
-#scores = rosettaScore.SilentScoreTable()
-
-#for silent_file in args:
-#    scores.add_file(silent_file)
-
+if len(args) < 1:
+    parser.error("you must specify at least one silent file")
 #score_gen = scores.score_generator(options.term)
 best_models = {} # key is a structure ID, value is a pair in form (tag,score)
 for silent_file in args:

@@ -3,7 +3,7 @@
 import Bio.PDB
 from optparse import OptionParser
 
-from rosettautil.protein import pdbStat
+from rosettautil.protein import util
 from rosettautil.rosetta import rosettaScore
 
 class mutation:
@@ -21,8 +21,8 @@ parser.add_option("--best",dest="best",help="print out the top n mutations in te
 parser.add_option("--worst",dest="worst",help="print out the bottom n mutations in terms of total energy, default = 10",default=10)
 (options,args) = parser.parse_args()
 
-native_struct = pdbStat.load_pdb(args[0])
-designed_struct = pdbStat.load_pdb(args[1])
+native_struct = util.load_pdb(args[0])
+designed_struct = util.load_pdb(args[1])
 
 native_residues = native_struct.get_residues()
 designed_residues = designed_struct.get_residues()
