@@ -15,7 +15,7 @@ def find_gaps(alignment,tag):
         if(record.id == tag): #as far as I can tell I can only iterate through an alignment, I can't lookup by tag
             sequence = record
             break
-    if sequence = None:
+    if sequence == None:
         raise LookupError("invalid tag specified")
     resid = 1
     gap_start = 1

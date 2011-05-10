@@ -4,6 +4,7 @@ from Bio.PDB import *
 from Bio import pairwise2
 from rosettautil.util import fileutil
 import math
+import warnings
 
 
 def sequence_recovery(native_struct,designed_struct):
