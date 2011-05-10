@@ -1,5 +1,6 @@
 #!/usr/bin/env python 
 
+#author: Jordan Willis
 from Bio.PDB.PDBParser import PDBParser
 from Bio.PDB.Polypeptide import three_to_one
 import sys
