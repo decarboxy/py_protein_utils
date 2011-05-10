@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+"written by Phil Bradley, Rhiju Das, Michael Tyka, TJ Brunette, and James Thompson from the Baker Lab. Edits done by Steven Combs, Sam Deluca and Jordan Willis  from the Meiler Lab."
+
 import string
 import sys
 import os
