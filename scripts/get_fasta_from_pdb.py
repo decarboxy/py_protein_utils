@@ -7,7 +7,7 @@ import sys
 import glob
 
 def usage():
-    print "Gives back an ordered fasta file of a specific chain up to a certain residue number under output.fasta"
+    print "Pulls fasta file of a specific chain up to a specified output file""
     print "python get_fasta_from_pdb_by_chain.py <pdb> <chain> <output>"
     
     
