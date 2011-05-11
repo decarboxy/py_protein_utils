@@ -309,7 +309,8 @@ def find_gaps(pdb,sequence):
     pdb_sequence = ""
     for residue in pdb.get_residues():
         residue_name = Polypeptide.three_to_one(residue.get_resname())
-        pdb += residue_name
+        type(residue_name)
+	pdb_sequence += residue_name
     
     #now we align the two sequences
     alignment = pairwise2.align.globalxx(pdb_sequence,sequence)

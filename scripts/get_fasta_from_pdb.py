@@ -7,7 +7,7 @@ import sys
 import glob
 
 def usage():
-    print "Pulls fasta file of a specific chain up to a specified output file""
+    print "Pulls fasta file of a specific chain up to a specified output file"
     print "python get_fasta_from_pdb_by_chain.py <pdb> <chain> <output>"
     
     
