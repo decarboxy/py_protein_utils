@@ -1,6 +1,7 @@
 #!/usr/bin/env python2.5
 from optparse import OptionParser
 from rosettautil.protein import util
+from rosettautil.protein import pdbStat
 from rosettautil.rosetta import rosettaScore
 from rosettautil.util import fileutil
 import Bio.PDB
@@ -37,7 +38,7 @@ score_rmsd = []
 name_score_rmsd =[]
 for decoy_file in args:
     tag = decoy_file.split("/").pop().split(".")[0]
-    decoy = pdbStat.load_pdb(decoy_file.rstrip())
+    decoy = util.load_pdb(decoy_file.rstrip())
     score_table = rosettaScore.ScoreTable(decoy_file)
     rms =  pdbStat.calculate_rms(native,decoy,options.ca,options.residues,"",options.chain)
     score = score_table.get_score(0,options.term) #0 is the pose energy
