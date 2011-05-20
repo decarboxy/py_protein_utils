@@ -35,6 +35,7 @@ elif options.mode =="pdb" or options.mode=="PDB":
     file_scores = []
     pathfile = fileutil.universal_open(args[0],"r")
     for path in pathfile:
+        path = path.rstrip()
         scores = rosettaScore.ScoreTable(path)
         total_score = scores.get_score(0,options.term)
         file_scores.append( (path,total_score) )
