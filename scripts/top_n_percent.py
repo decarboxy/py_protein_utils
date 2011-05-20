@@ -33,12 +33,12 @@ if options.mode=="silent" or options.mode=="Silent":
         count += 1
 elif options.mode =="pdb" or options.mode=="PDB":
     file_scores = []
-    pathfile = fileutil.universal_open(args[0],'r')
+    pathfile = fileutil.universal_open(args[0],"r")
     for path in pathfile:
         scores = rosettaScore.ScoreTable(path)
         total_score = scores.get_score(0,options.term)
         file_scores.append( (path,total_score) )
-    file_scores = sorted(scores,key=lambda x: x[1])
+    file_scores = sorted(file_scores,key=lambda x: x[1])
     structure_count = len(file_scores)
     percent = float(options.percent)/100.0
     structs_to_print = int(percent*structure_count)
