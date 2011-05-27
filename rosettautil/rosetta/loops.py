@@ -59,7 +59,7 @@ class RosettaLoopManager:
             fields = line.split()
             if line[0] == '#':
                 continue #this is a comment
-            if len(fields <1):
+            if len(fields) <1 :
                 continue #this is a blank line
             if fields[0] != "LOOP":
                 continue #this is something that is not a loop line
