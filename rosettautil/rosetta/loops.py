@@ -21,7 +21,7 @@ class RosettaLoop:
     def set_loop_from_string(self,loopstring):
         """fill a loop from a line of a Rosetta3 loop file"""
         loop_array = loopstring.split()
-        if len(loop_array) != 5:
+        if len(loop_array) != 6:
             sys.exit("loop lines must be in this form: LOOP start end cutpoint skip extend")
         try:
             self.start = int(loop_array[1])
