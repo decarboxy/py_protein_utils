@@ -14,7 +14,7 @@ parser=OptionParser(usage)
 
 loop_manager = loops.RosettaLoopManager()
 loop_manager.read(args[0])
-input_struct = pdbStat.load_pdb(args[1])
+input_struct = util.load_pdb(args[1])
 
 zero_triplet = array.array('f',[0.0,0.0,0.0])
 
