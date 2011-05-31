@@ -28,7 +28,11 @@ setup(
                 ],
     scripts = [
                 'scripts/best_models.py',
-                'scripts/clustering.py',
+                'scripts/amino_acids.py',
+		'scripts/clean_pdb.py',
+		'scripts/get_fasta_from_pdb.py',
+		'scripts/small_molecule_rmsd_table.py',
+		'scripts/clustering.py',
                 'scripts/pdb_renumber.py',
                 'scripts/remove_loop_coords.py',
                 'scripts/score_scatter_plot.py',
