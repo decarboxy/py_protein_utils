@@ -87,4 +87,4 @@ class sasa_map:
             self.sasamap.add_item(resname,chain,resnum,"polar",pol_abs,pol_rel)
             
     def get_value(self,chain,resnum,type,mode):
-        return self.sasamap.get_value(chain,resnum,type,mode):
+        return self.sasamap.get_value(chain,resnum,type,mode)

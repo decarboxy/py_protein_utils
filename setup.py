@@ -23,7 +23,7 @@ setup(
     packages = ['rosettautil',
                 'rosettautil.protein',
                 'rosettautil.rosetta',
-		'rosettautil.bcl',
+		        'rosettautil.bcl',
                 'rosettautil.util'
                 ],
     scripts = [
