@@ -1,4 +1,4 @@
-import Bio.PDB.Polypeptide
+import Bio.PDB.Residue
 from rosettautil.util import fileutil
 
 class sasa_point:
@@ -53,7 +53,7 @@ class sasa_map:
         
         self.sasamap = sasa_map()
         sasafile = fileutil.universal_open(path,'r')
-        __parse__(sasafile)
+        self.__parse__(sasafile)
         sasafile.close()
         
     def __parse__(self,file):
@@ -72,17 +72,19 @@ class sasa_map:
             
             side_abs = float(line[6])
             side_rel = float(line[7])
-            self.sasamap.add_item(resname,chain,resnum,"all", all_abs,all_rel)
+            self.sasamap.add_item(resname,chain,resnum,"sidechain", side_abs,side_rel)
             
             main_abs = float(line[8])
             main_rel = float(line[9])
+            self.sasamap.add_item(resname,chain,resnum,"mainchain",main_abs,main_rel)
             
             apol_abs = float(line[10])
             apol_rel = float(line[11])
+            self.sasamap.add_item(resname,chain,resnum,"nonpolar",apol_abs,apol_rel)
             
             pol_abs = float(line[12])
             pol_rel = float(line[13])
+            self.sasamap.add_item(resname,chain,resnum,"polar",pol_abs,pol_rel)
             
-
-            
-            
+    def get_value(self,chain,resnum,type,mode):
+        return self.sasamap.get_value(chain,resnum,type,mode):
