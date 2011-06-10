@@ -48,7 +48,7 @@ class sasa_map:
         elif mode == "relative":
             return point.relative
 
-class sasa_map:
+class sasa_data:
     def __init__(self,path):
         
         self.sasamap = sasa_map()
