@@ -32,7 +32,7 @@ class pssm_map:
 				data = line[2:23]
 			if mode == "percent":
 				data = line[22:42]
-				print data
+				#print data
 			for resname,score in zip(header,data):
 				line_map[resname] = int(score)
 			self.pssmmap[res_num] = line_map
