@@ -279,8 +279,11 @@ def calculate_rms(native,decoy,ca_mode,residues,rms_residues,chain):
            #         continue
             if len(residue_set) > 0 and native_residue.id[1] in residue_set:
                 if ca_mode:
-                    native_atoms.append(native_residue['CA'])
-                    decoy_atoms.append(decoy_residue['CA'])
+                    try:
+                        native_atoms.append(native_residue['CA'])
+                        decoy_atoms.append(decoy_residue['CA'])
+                    except KeyError:
+                        print "WARNING: residue", str(native_residue.get_id()[1]), "has no CA atom in either the native or the decoy structure.  Either this residue is a hetatm or part of your backbone is missing. The residue will not be included in the RMSD calculations."
                 else:
                     for (native_atom,decoy_atom) in zip(native_residue.get_list(), decoy_residue.get_list()):
                        # print native_atom
@@ -288,8 +291,11 @@ def calculate_rms(native,decoy,ca_mode,residues,rms_residues,chain):
                         decoy_atoms.append(decoy_atom)
             elif len(residue_set) is 0:
                 if ca_mode:
-                    native_atoms.append(native_residue['CA'])
-                    decoy_atoms.append(decoy_residue['CA'])
+                    try:
+                        native_atoms.append(native_residue['CA'])
+                        decoy_atoms.append(decoy_residue['CA'])
+                    except KeyError:
+                        print "WARNING: residue", str(native_residue.get_id()[1]), "has no CA atom in either the native or the decoy structure.  Either this residue is a hetatm or part of your backbone is missing. The residue will not be included in the RMSD calculations."
                 else:
                     for (native_atom,decoy_atom) in zip(native_residue.get_list(), decoy_residue.get_list()):
                         #print native_atom
