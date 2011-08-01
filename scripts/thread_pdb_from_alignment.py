@@ -18,7 +18,7 @@ def list_to_generator(list):
 usage = "%prog [options] alignment_file.aln template.pdb output.pdb"
 parser=OptionParser(usage)
 parser.add_option("--template",dest="template",help="name of the template sequence", default="template")
-parser.add_option("--alignment", dest ="alignment",help="name of the alignment sequence",default="alignment")
+parser.add_option("--target", dest ="target",help="name of the target sequence",default="target")
 parser.add_option("--chain",dest="chain",help="chain to thread pdb around",default="A")
 parser.add_option("--align_format",dest="align_format",help="alignment file format, choose from clustal, emboss, fasta, fasta-m10,ig,nexus,phylip,stockholm.  See http://biopython.org/wiki/AlignIO for details",default="clustal")
 (options,args)= parser.parse_args()
@@ -40,17 +40,17 @@ try:
 except LookupError:
     sys.exit("could not find "+options.template+" in alignment file")
 try:    
-    alignment_gaps = alignment.find_gaps(alignment_data,options.alignment)
+    target_gaps = alignment.find_gaps(alignment_data,options.target)
 except LookupError:
-    sys.exit("could not find "+options.alignment+" in alignment file")
+    sys.exit("could not find "+options.target+" in alignment file")
 try:
     template_id = alignment.get_id_from_tag(alignment_data,options.template)
 except LookupError:
     sys.exit("could not find "+options.template+" in alignment file")
 try:
-    alignment_id = alignment.get_id_from_tag(alignment_data,options.alignment)
+    target_id = alignment.get_id_from_tag(alignment_data,options.target)
 except LookupError:
-    sys.exit("could not find "+options.alignment+" in alignment file")
+    sys.exit("could not find "+options.target+" in alignment file")
 
 #there might be missing density in our pdb file.  Align the template sequence to the pdb file
 #and return a gapped sequence.  We will use this in conjunction with the template and alignment sequence
@@ -78,7 +78,7 @@ for chain in template_struct.get_chains():
 #template_residues = template_struct.get_chains()
 sequence_num = 1 #the pdb sequence number
 atom_num = 1 #the atom id
-for align_resn, temp_resn,gap_temp_resn in zip(alignment_data[alignment_id],alignment_data[template_id],gapped_template):
+for align_resn, temp_resn,gap_temp_resn in zip(alignment_data[target_id],alignment_data[template_id],gapped_template):
     #print align_resn, temp_resn
     if align_resn == '-' and temp_resn == '-':  #this shouldn't happen, but it is safe to ignore
         continue
