@@ -303,17 +303,19 @@ def calculate_rms(native,decoy,ca_mode,residues,rms_residues,chain):
     else:
         return superpose.rms
 
-def find_gaps(pdb,sequence):
+def find_gaps(pdb,sequence,chain):
     """return a sequence with gaps in the pdb represented by - symbols"""
     #we can't trust the seqres record, it might not even exist, so get the sequence by looping through all the residues
     pdb_sequence = ""
     for residue in pdb.get_residues():
+        if residue.get_full_id()[2] != chain: #skip residues that aren't in the chain
+            continue
         residue_name = Polypeptide.three_to_one(residue.get_resname())
         type(residue_name)
-	pdb_sequence += residue_name
-    
+        pdb_sequence += residue_name
     #now we align the two sequences
-    alignment = pairwise2.align.globalxx(pdb_sequence,sequence)
+    alignment = pairwise2.align.globalmx(pdb_sequence,sequence,2,-1)
+    #print alignment
     return alignment[0][1]
     
         

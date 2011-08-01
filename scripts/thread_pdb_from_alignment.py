@@ -55,12 +55,12 @@ except LookupError:
 #there might be missing density in our pdb file.  Align the template sequence to the pdb file
 #and return a gapped sequence.  We will use this in conjunction with the template and alignment sequence
 template_sequence = alignment_data[alignment.get_id_from_tag(alignment_data,options.template)]
-gapped_template = pdbStat.find_gaps(template_struct,template_sequence)
+gapped_template = pdbStat.find_gaps(template_struct,template_sequence,options.chain)
 
-#if you have an alignment gap thats larger than 3 aa, this script won't work
-for gap in alignment_gaps:
-    if gap[0]-gap[1] > 1:
-        sys.exit("gap of size "+ str(gap[0]-gap[1])+" in alignment sequence.  You cannot have gaps larger than 1 in your alignment sequence")
+#if you have an alignment gap thats larger than 1 aa, this script won't work
+for gap in target_gaps:
+    if abs(gap[1]-gap[0]) > 1:
+        sys.exit("gap of size "+ str(gap[0]-gap[1])+" in target sequence.  You cannot have gaps larger than 1 in your alignment sequence")
 
 #we need to make a new structure, then a new model, then a new chain, then we fill the chain with residues, and atoms
 output_structure_builder = Bio.PDB.StructureBuilder.StructureBuilder()
@@ -69,12 +69,20 @@ output_structure_builder.init_model(1) #there is only one model
 output_structure_builder.init_chain(options.chain) #there is only one chain, same ID as the template
 output_structure_builder.init_seg("")
 
+
+
 #thats it for the initialization stuff, now we go through add residues, and atoms.
 template_residues = None
+chain_found = False
 for chain in template_struct.get_chains():
     if chain.get_id() == options.chain:
+        chain_found = True
         template_residues= list_to_generator(chain.get_list())
         break
+
+if not chain_found:
+	sys.exit("ERROR: You specified chain "+options.chain+" but this chain does not exist in the pdb file "+ args[1])
+
 #template_residues = template_struct.get_chains()
 sequence_num = 1 #the pdb sequence number
 atom_num = 1 #the atom id
