@@ -59,8 +59,8 @@ gapped_template = pdbStat.find_gaps(template_struct,template_sequence)
 
 #if you have an alignment gap thats larger than 3 aa, this script won't work
 for gap in alignment_gaps:
-    if gap[0]-gap[1] > 3:
-        sys.exit("gap of size "+ str(gap[0]-gap[1])+" in alignment sequence.  You cannot have gaps larger than 3 in your alignment sequence")
+    if gap[0]-gap[1] > 1:
+        sys.exit("gap of size "+ str(gap[0]-gap[1])+" in alignment sequence.  You cannot have gaps larger than 1 in your alignment sequence")
 
 #we need to make a new structure, then a new model, then a new chain, then we fill the chain with residues, and atoms
 output_structure_builder = Bio.PDB.StructureBuilder.StructureBuilder()
