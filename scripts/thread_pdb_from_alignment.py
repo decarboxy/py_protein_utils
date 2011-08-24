@@ -60,7 +60,9 @@ gapped_template = pdbStat.find_gaps(template_struct,template_sequence,options.ch
 #if you have an alignment gap thats larger than 1 aa, this script won't work
 for gap in target_gaps:
     if abs(gap[1]-gap[0]) > 1:
-        sys.exit("gap of size "+ str(gap[0]-gap[1])+" in target sequence.  You cannot have gaps larger than 1 in your alignment sequence")
+        print "WARNING: gap of size "+ str(gap[0]-gap[1])+" in target sequence.  
+		print "We cannot completely thread this protein in an automatic way, "
+		print "manual inspection and adjustment of loop files will be required."
 
 #we need to make a new structure, then a new model, then a new chain, then we fill the chain with residues, and atoms
 output_structure_builder = Bio.PDB.StructureBuilder.StructureBuilder()
