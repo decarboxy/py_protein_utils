@@ -7,9 +7,8 @@ class Atom:
         self.chain = chain
         self.charge = charge
         self.bonds = []
-    def add_bond(bond):
+    def add_bond(self,bond):
         self.bonds.append(bond)
-    
 
 class Bond:
     def __init__(self,lower,upper,type=0):
