@@ -1,5 +1,7 @@
 import operator 
 from rosettautil.util import fileutil
+import sqlite3
+
 
 def get_table(path):
     """return the score table from the bottom of a PDB as a list of lines"""
@@ -200,3 +202,30 @@ class ScoreTableMap:
     def get_weight(self,tag,term):
         return self.table_map[tag].get_weight(term)
 
+class DataBaseScoreTable:
+    def __init__(self,path):
+	self.connection = sqlite3.connect(path)
+    
+    def get_score(self,tag,term):
+	cursor = self.connection.cursor()
+	command = "SELECT structures.tag, string_real_data.data_value FROM structures LEFT JOIN string_real_data ON structures.struct_id=string_real_data.struct_id WHERE string_real_data.data_key=? and structures.tag=?"
+	params = (term,tag)
+    
+	cursor.execute(command,params)
+	score = cursor.next()
+	cursor.close()
+	return score
+
+    def score_generator(self,term):
+	cursor = self.connection.cursor()
+	command = """SELECT structures.tag, string_real_data.data_value
+	FROM structures
+	LEFT JOIN string_real_data
+	ON structures.struct_id=string_real_data.struct_id
+	WHERE string_real_data.data_key = ?"""
+	params = (term,)
+	cursor.execute(command,params)
+	for tag,value in cursor:
+	    yield (tag,value)
+	cursor.close()
+    

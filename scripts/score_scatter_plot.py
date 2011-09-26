@@ -11,10 +11,11 @@ parser.add_option("--y_axis",dest="y_axis",help="score term to plot on y axis")
 parser.add_option("--silent",dest="silent",help="path to silent file",default="")
 parser.add_option("--silent_list",dest="silent_list",help="path to list of silent files",default="")
 parser.add_option("--pdbs",dest="pdb_list",help="path to list fo pdb files",default="")
+parser.add_option("--database",dest="database",help="path to sqlite database",default="")
 (options,args) = parser.parse_args()
 
-if options.silent == "" and options.pdb_list == "" and options.silent_list=="":
-    parser.error("you must specify --silent or --pdbs")
+if options.silent == "" and options.pdb_list == "" and options.silent_list=="" and options.database=="" :
+    parser.error("you must specify --silent, --database or --pdbs")
 
 data = [] #list of tuples in form (tag,x_score,y_score)
 
@@ -51,6 +52,17 @@ if options.pdb_list != "":
         y_score = scores.get_score(0,options.y_axis) #residue 0 is the total energy for the pose
         data.append( (pdb,x_score,y_score) )
     pdb_list.close()
+
+if options.database != "":
+    db = rosettaScore.DataBaseScoreTable(options.database)
+    x_axis_scores = db.score_generator(options.x_axis)
+    y_axis_scores = db.score_generator(options.y_axis)
+    for x_point, y_point in zip(x_axis_scores,y_axis_scores):
+	x_tag = x_point[0]
+	y_tag = y_point[0]
+	if x_tag != y_tag:
+	    sys.exit("tags aren't equal, something is very wrong")
+	data.append( (x_tag, x_point[1],y_point[1]) )
 
 #now we have the data, so we output it
 output_file = fileutil.universal_open(args[0],'w')
